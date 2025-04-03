@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aishwarya's Surprise</title>
+    <link rel="icon" type="image/x-icon" href="Virat_1.ico">
+    <link rel="shortcut icon" href="Virat_1.ico">
+    <!-- For Apple/Safari devices -->
+    <link rel="apple-touch-icon" href="Virat.png">
+    <!-- For modern browsers -->
+    <link rel="icon" type="image/png" href="Virat.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- First Page -->
+    <div id="firstPage" class="page">
+        <img src="mediamodifier_cropped_image.png" alt="Romantic Vector Top" class="First_vector_image-top">
+        <div class="content-wrapper">
+            <h1> Hey Aishwarya !!</h1>
+            <p>Something made just for you, Unlock it with your credentials</p>
+
+            <!-- Login Form -->
+            <div class="login-container">
+                <div class="login-form">
+                    <input type="text" id="username" placeholder="Username" class="login-input">
+                    <input type="password" id="password" placeholder="Password" class="login-input">
+                    <button id="loginButton">Continue</button>
+                    <p id="errorMessage" class="error-message"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second Page -->
+    <div id="secondPage" class="page hidden">
+        <img src="Love_Vector.png" alt="Romantic Vector Top" class="vector-image-top">
+        <div class="greeting-card">
+            <div class="greeting-card-content">
+                <h2>Dear Aishwarya</h2>
+                <p>Aishwarya,You are the most amazing person I know 💖...
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem ut reprehenderit iste ex vero excepturi quis neque facilis magnam natus, corporis cumque officiis illo pariatur, porro tempora. Suscipit, ipsum in?
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati maxime facere consequuntur ipsam quo? Tempore quod, cupiditate laborum nisi modi omnis recusandae possimus esse qui voluptatum dolore tenetur maiores distinctio.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum odit quis nobis natus ex, omnis tempora nihil error harum? Quasi veritatis asperiores, quis velit amet ea atque fugit itaque hic.
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum quidem suscipit doloremque odit quasi exercitationem similique, asperiores debitis aspernatur nobis odio placeat libero earum deleniti velit perspiciatis temporibus obcaecati quas.
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. In culpa voluptates et debitis ab nemo, repellat, quaerat maxime quisquam velit aliquam quos suscipit eum laborum cupiditate, ullam veritatis consequuntur itaque!
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti maxime eum, molestias nisi exercitationem delectus perspiciatis pariatur sed eaque ex? Natus error dolore ducimus. Voluptas et ipsam praesentium accusantium eaque!
+                </p>
+            </div>
+        </div>
+        <div class="balloons">
+            <img src="Ballon_love_1.gif" alt="Balloon" class="balloon">
+            <img src="balloon_2.gif" alt="Balloon" class="balloon">
+            <img src="balloons_4.png" alt="Balloon" class="balloon">
+        </div>
+
+        <div class="italian-food-container">
+            <img src="Pizza.png" alt="Pizza" class="food-image">
+            <img src="Tiramisu.png" alt="Tiramisu" class="food-image">
+        </div>
+
+        <div class="flower-container">
+            <img src="Circle1_2ndPage.png" alt="Flower Circle" class="flower-circle">
+            <img src="Roses_Bouquet.png" alt="Roses" class="roses">
+        </div>
+
+        <audio id="backgroundMusic" loop>
+            <source src="Tujhe mein Rab Song_Page2.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Third Page -->
+    <div id="thirdPage" class="page hidden">
+        <div class="wrinkle-paper">
+            <div class="paper-content">
+                <h2>Will you marry me? 💍❤️</h2>
+                <img src="couple-8541013.svg" alt="Couple" class="couple-image">
+                <div class="corner-gif">
+                    <img src="Love_vector2.png" alt="Romantic GIF" class="romantic-gif">
+                </div>
+            </div>
+        </div>
+
+        <div class="fireworks-container">
+            <canvas id="fireworksCanvas"></canvas>
+        </div>
+
+        <audio id="romanticSong" loop>
+            <source src="Kaho_Na_Pyar_Hai_Crop.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="response-buttons">
+            <button id="yesButton">Yes! 💖</button>
+            <button id="noButton">No 🙈</button>
+        </div>
+    </div>
+
+    <!-- Yes Popup -->
+    <div class="popup-overlay" id="yesPopupOverlay">
+        <div class="popup-content">
+            <h2>Thank you So Much Aishwarya! 💖</h2>
+            <p>I promise to cherish every moment with you, to love you endlessly, and to stand by your side through every joy and challenge...</p>
+            <button class="popup-close-btn" id="yesPopupCloseBtn">Close</button>
+        </div>
+    </div>
+
+    <!-- No Popup -->
+    <div class="popup-overlay" id="noPopupOverlay">
+        <div class="popup-content">
+            <h2>I'll Keep Trying! 💘</h2>
+            <p>I understand your hesitation, but I won't give up! I'll keep trying to win your heart because you're worth every effort...</p>
+            <button class="popup-close-btn" id="noPopupCloseBtn">Close</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

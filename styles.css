@@ -1,0 +1,765 @@
+/* General Styles */
+body {
+  font-family: 'Lobster', cursive;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(145deg, #6096FD, #FAA7B8);
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 1s ease-in-out;
+  overflow: hidden;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+}
+
+/* First Page Styles */
+#firstPage {
+  background: linear-gradient(145deg, #6096FD, #FAA7B8);
+}
+
+.content-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.First_vector_image-top {
+  width: 100%;
+  height: 60%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* Login Form Styles */
+.login-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  max-width: 500px;
+}
+
+.login-form {
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  padding: 24px;
+  border-radius: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.7);
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+#loginButton {
+  background-color: #ff6f61;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 70%;
+  font-family: 'Lobster', cursive;
+  margin-top: 5px;
+}
+
+.error-message {
+  color: #ff3333;
+  font-size: 0.9rem;
+  height: 20px;
+  margin-top: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Second Page Styles */
+#secondPage {
+  background: linear-gradient(145deg, #e88787, #e3cbc4);
+}
+
+.vector-image-top {
+  width: 100%;
+  height: 51%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.greeting-card {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 30px 30px 20px 30px;
+  border-radius: 50px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 80%;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.greeting-card-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 15px;
+}
+
+.greeting-card-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.greeting-card-content::-webkit-scrollbar-thumb {
+  background-color: #ff6f61;
+  border-radius: 10px;
+}
+
+.greeting-card-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+.greeting-card h2 {
+  font-size: 2.5rem;
+  margin-bottom: 18px;
+  margin-top: 10px;
+  color: #ff6f61;
+}
+
+.greeting-card p {
+  font-size: 1.2rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Balloon Animation */
+.balloons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.balloon {
+  position: absolute;
+  width: 100px;
+  animation: float 6s ease-in infinite;
+  opacity: 0;
+}
+
+@keyframes float {
+  0% {
+      transform: translateY(0) scale(0.5);
+      opacity: 0;
+  }
+  50% {
+      transform: translateY(-50vh) scale(1);
+      opacity: 1;
+  }
+  100% {
+      transform: translateY(-100vh) scale(0.5);
+      opacity: 0;
+  }
+}
+
+/* Italian Food Images */
+.italian-food-container {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  display: flex;
+  gap: 20px;
+  z-index: 2;
+}
+
+.food-image {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 24px;
+  border: 4px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+/* Flower Circle with Roses */
+.flower-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 150px;
+  height: 150px;
+}
+
+.flower-circle {
+  width: 130%;
+  height: 130%;
+  position: relative;
+  right: 20%;
+  bottom: 20%;
+}
+
+.roses {
+  position: absolute;
+  width: 85%;
+  height: 80%;
+  top: -4%;
+  left: 6%;
+}
+
+/* Third Page Styles */
+#thirdPage {
+  background: linear-gradient(145deg, #ff9a9e, #fad0c4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.wrinkle-paper {
+  background: url('Paper_Wrinkle.jpg') center/cover;
+  width: 90%;
+  max-width: 600px;
+  min-height: 300px;
+  padding: 15px;
+  border-radius: 60px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.95);
+  animation: paperAppear 1.5s forwards 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid #e98d8d;
+  margin: 20px 0;
+}
+
+@keyframes paperAppear {
+  0% {
+      transform: scale(0.95);
+      opacity: 0;
+  }
+  100% {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+.paper-content {
+  text-align: center;
+  width: 100%;
+}
+
+.paper-content h2 {
+  font-size: 2rem;
+  color: #f13572;
+  margin-bottom: 20px;
+  text-shadow: 8px 13px 5px rgba(0, 0, 0, 0.2);
+  line-height: 1.3;
+}
+
+.couple-image {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 10px;
+  box-shadow: 0 10px 0px rgba(0, 0, 0, 0.2);
+  margin: 0 auto 20px;
+  display: block;
+}
+
+.corner-gif {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+.romantic-gif {
+  width: 115px;
+  height: 115px;
+}
+
+/* Fireworks */
+.fireworks-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Response Buttons */
+.response-buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  z-index: 3;
+  position: relative;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.response-buttons button {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-family: 'Lobster', cursive;
+  min-width: 120px;
+}
+
+#yesButton {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#noButton {
+  background-color: #f44336;
+  color: white;
+  position: static;
+  transition: all 0.5s ease;
+}
+
+.response-buttons button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Popup Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.popup-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.popup-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 90%;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  position: relative;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.5s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.popup-overlay.active .popup-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.popup-content h2 {
+  color: #d23669;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.popup-content p {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 25px;
+  line-height: 1.5;
+  font-family: 'Roboto', sans-serif;
+}
+
+.popup-close-btn {
+  background: #ff6f61;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Lobster', cursive;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.popup-close-btn:hover {
+  background: #f14040;
+  transform: scale(1.05);
+}
+
+/* Click Here Button */
+.click-here-btn {
+  display: block;
+  margin: 10px auto;
+  padding: 12px 25px;
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Lobster', cursive;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.click-here-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Responsive Adjustments */
+
+/* For Laptops (1024px and below) */
+@media (max-width: 1024px) {
+  h1 {
+      font-size: 2.5rem;
+  }
+  
+  p {
+      font-size: 1.2rem;
+  }
+  
+  .greeting-card {
+      max-width: 85%;
+      height: 220px;
+  }
+  
+  .greeting-card h2 {
+      font-size: 2rem;
+  }
+  
+  .greeting-card p {
+      font-size: 1rem;
+  }
+  
+  .food-image {
+      width: 120px;
+      height: 120px;
+  }
+  
+  .flower-container {
+      width: 130px;
+      height: 130px;
+  }
+  
+  .wrinkle-paper {
+      min-height: 280px;
+  }
+  
+  .paper-content h2 {
+      font-size: 1.8rem;
+  }
+  
+  .couple-image {
+      max-width: 300px;
+  }
+  
+  .romantic-gif {
+      width: 100px;
+      height: 100px;
+  }
+}
+
+/* For Tablets (768px and below) */
+@media (max-width: 768px) {
+  h1 {
+      font-size: 2rem;
+  }
+  
+  p {
+      font-size: 1rem;
+  }
+  
+  .First_vector_image-top,
+  .vector-image-top {
+      height: 45%;
+  }
+  
+  .greeting-card {
+      max-width: 90%;
+      height: 200px;
+      padding: 20px;
+  }
+  
+  .greeting-card h2 {
+      font-size: 1.8rem;
+  }
+  
+  .italian-food-container {
+      bottom: 20px;
+      left: 20px;
+      gap: 15px;
+  }
+  
+  .food-image {
+      width: 100px;
+      height: 100px;
+      border-width: 3px;
+  }
+  
+  .flower-container {
+      width: 110px;
+      height: 110px;
+      bottom: 15px;
+      right: 15px;
+  }
+  
+  .wrinkle-paper {
+      width: 95%;
+      min-height: 250px;
+  }
+  
+  .paper-content h2 {
+      font-size: 1.6rem;
+  }
+  
+  .couple-image {
+      max-width: 250px;
+  }
+  
+  .response-buttons {
+      gap: 15px;
+  }
+  
+  .response-buttons button {
+      padding: 10px 18px;
+      font-size: 1rem;
+      min-width: 110px;
+  }
+  
+  .romantic-gif {
+      width: 85px;
+      height: 85px;
+  }
+  
+  .popup-content {
+      padding: 25px;
+  }
+  
+  .popup-content h2 {
+      font-size: 1.6rem;
+  }
+  
+  .popup-content p {
+      font-size: 1rem;
+  }
+}
+
+/* For Mobile (480px and below) */
+@media (max-width: 480px) {
+  h1 {
+      font-size: 1.8rem;
+  }
+  
+  p {
+      font-size: 0.9rem;
+  }
+  
+  .First_vector_image-top,
+  .vector-image-top {
+      height: 40%;
+  }
+  
+  .login-form {
+      padding: 15px;
+  }
+  
+  .login-input {
+      padding: 10px 12px;
+      font-size: 0.9rem;
+  }
+  
+  #loginButton {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+  }
+  
+  .greeting-card {
+      max-width: 95%;
+      height: 180px;
+      padding: 15px;
+  }
+  
+  .greeting-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+  }
+  
+  .greeting-card p {
+      font-size: 0.9rem;
+  }
+  
+  .italian-food-container {
+      bottom: 15px;
+      left: 10px;
+      gap: 10px;
+  }
+  
+  .food-image {
+      width: 80px;
+      height: 80px;
+      border-width: 2px;
+  }
+  
+  .flower-container {
+      width: 90px;
+      height: 90px;
+      bottom: 10px;
+      right: 10px;
+  }
+  
+  .wrinkle-paper {
+      padding: 12px;
+      min-height: 220px;
+  }
+  
+  .paper-content h2 {
+      font-size: 1.4rem;
+  }
+  
+  .couple-image {
+      max-width: 200px;
+  }
+  
+  .response-buttons {
+      flex-direction: column;
+      gap: 10px;
+  }
+  
+  .response-buttons button {
+      width: 80%;
+  }
+  
+  .romantic-gif {
+      width: 70px;
+      height: 70px;
+  }
+  
+  .popup-content {
+      padding: 20px;
+  }
+  
+  .popup-content h2 {
+      font-size: 1.4rem;
+  }
+  
+  .popup-content p {
+      font-size: 0.9rem;
+  }
+  
+  .popup-close-btn {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+  }
+}
+
+/* For Small Mobile (360px and below) */
+@media (max-width: 360px) {
+  h1 {
+      font-size: 1.6rem;
+  }
+  
+  .greeting-card {
+      height: 160px;
+  }
+  
+  .food-image {
+      width: 70px;
+      height: 70px;
+  }
+  
+  .flower-container {
+      width: 80px;
+      height: 80px;
+  }
+  
+  .romantic-gif {
+      width: 60px;
+      height: 60px;
+  }
+  
+  .paper-content h2 {
+      font-size: 1.3rem;
+  }
+}
