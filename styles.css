@@ -502,7 +502,7 @@ p {
   
   .greeting-card {
       max-width: 85%;
-      height: 220px;
+      height: 290px;
   }
   
   .greeting-card h2 {
@@ -558,7 +558,7 @@ p {
   
   .greeting-card {
       max-width: 90%;
-      height: 200px;
+      height: 240px;
       padding: 20px;
   }
   
@@ -586,7 +586,7 @@ p {
   }
   
   .wrinkle-paper {
-      width: 95%;
+      width: 90%;
       min-height: 250px;
   }
   
@@ -656,8 +656,8 @@ p {
   }
   
   .greeting-card {
-      max-width: 95%;
-      height: 180px;
+      max-width: 90%;
+      height: 350px;
       padding: 15px;
   }
   
@@ -690,7 +690,7 @@ p {
   }
   
   .wrinkle-paper {
-      padding: 12px;
+      padding: 2px;
       min-height: 220px;
   }
   
@@ -741,7 +741,7 @@ p {
   }
   
   .greeting-card {
-      height: 160px;
+      height: 305px;
   }
   
   .food-image {
@@ -763,3 +763,483 @@ p {
       font-size: 1.3rem;
   }
 }
+
+
+
+/* quiz css start here */
+
+/* Quiz Container */
+.quiz-container {
+  position: relative;
+  z-index: 10;
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 30px;
+  background: rgba(255, 240, 245, 0.85);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(255, 182, 193, 0.25);
+  border: 1px solid rgba(255, 192, 203, 0.2);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Title */
+.quiz-container h2 {
+  text-align: center;
+  color: #ff5e6c;
+  font-family: 'Lobster', cursive;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+/* Question */
+#questionText {
+  font-size: 1.2rem;
+  color: #444;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Lobster', cursive;
+}
+
+/* Options Container */
+.options-container {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.option {
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  border: 1.5px solid #ffd6e0;
+  box-shadow: 0 2px 8px rgba(255, 192, 203, 0.1);
+  font-size: 1rem;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Lobster', cursive
+}
+
+.option:hover {
+  transform: translateY(-2px);
+  border-color: #ff9eb5;
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.15);
+}
+
+.option.selected {
+  background: linear-gradient(135deg, #ff6f91 0%, #f5b8d3 100%);
+  color: #fff;
+  border-color: #ff6f91;
+  box-shadow: 0 4px 12px rgba(255, 111, 145, 0.3);
+}
+
+.option input[type="radio"] {
+  display: none;
+}
+
+/* Next Button */
+#nextButton {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: linear-gradient(135deg, #75d7e0 0%, #22769b 110%);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Lobster', cursive;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(255, 111, 145, 0.25);
+  transition: all 0.3s ease;
+}
+
+#nextButton:hover {
+  background: linear-gradient(135deg, #75d7e0 0%, #09394e 110%);
+  transform: translateY(-1px) scale(1.01);
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  height: 6px;
+  background: #ffffff;
+  border-radius: 6px;
+  margin: 20px 0;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6f91 0%, #ffb3c1 100%);
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .quiz-container {
+    padding: 25px 20px;
+  }
+
+  .quiz-container h2 {
+    font-size: 1.6rem;
+  }
+
+  #questionText {
+    font-size: 1.05rem;
+  }
+
+  .option {
+    font-size: 0.95rem;
+    padding: 10px 15px;
+  }
+
+  #nextButton {
+    font-size: 1rem;
+    padding: 12px;
+  }
+}
+
+
+/* Flying Emojis start here */
+.flying-emoji {
+  position: fixed;
+  font-size: 1.5rem; /* Base size */
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  user-select: none;
+  will-change: transform, opacity;
+  animation: float-center 6s ease-in forwards; /* Slower animation */
+}
+
+/* Base animations for all directions */
+@keyframes float-center {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(calc(var(--rotation-direction, 1) * 360deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes float-left {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50vw) translateY(-100vh) rotate(calc(var(--rotation-direction, 1) * 360deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes float-right {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(50vw) translateY(-100vh) rotate(calc(var(--rotation-direction, 1) * 360deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes float-top {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(calc(var(--rotation-direction, 1) * 360deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes float-bottom {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(calc(var(--rotation-direction, 1) * 360deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Diagonal animations */
+@keyframes float-top-left {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-30vw) translateY(-100vh) rotate(calc(var(--rotation-direction, 1) * 360deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes float-top-right {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(30vw) translateY(-100vh) rotate(calc(var(--rotation-direction, 1) * 360deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes float-bottom-left {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-30vw) translateY(100vh) rotate(calc(var(--rotation-direction, 1) * 360deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes float-bottom-right {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(30vw) translateY(100vh) rotate(calc(var(--rotation-direction, 1) * 360deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Animation path classes */
+.flying-emoji.path1 { animation-name: float-left; }
+.flying-emoji.path2 { animation-name: float-right; }
+.flying-emoji.path3 { animation-name: float-top; }
+.flying-emoji.path4 { animation-name: float-bottom; }
+.flying-emoji.path5 { animation-name: float-top-left; }
+.flying-emoji.path6 { animation-name: float-top-right; }
+.flying-emoji.path7 { animation-name: float-bottom-left; }
+.flying-emoji.path8 { animation-name: float-bottom-right; }
+/* Responsive Adjustments */
+
+/* Laptops (1024px and below) */
+@media (max-width: 1024px) {
+  .flying-emoji {
+    font-size: 1.4rem;
+    animation-duration: 7s; /* Even slower on smaller screens */
+  }
+}
+
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+  .flying-emoji {
+    font-size: 1.3rem;
+    animation-duration: 8s;
+  }
+}
+
+/* Mobile Devices (480px and below) */
+@media (max-width: 480px) {
+  .flying-emoji {
+    font-size: 1.1rem;
+    animation-duration: 9s;
+  }
+}
+
+/* Small Mobile Devices (360px and below) */
+@media (max-width: 360px) {
+  .flying-emoji {
+    font-size: 1rem;
+    animation-duration: 10s;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .flying-emoji {
+    animation: none !important;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+}
+
+
+/* Surprise page transition css start here */
+
+/* Transition Page Styles */
+#transitionPage {
+  background: linear-gradient(145deg, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.transition-content {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 80%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+.transition-image {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #41a3d4d6;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.transition-content h2 {
+  color: #ff5e6c;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.transition-content p {
+  color: #333;
+  font-size: 1.1rem;
+  font-family: 'Lobster', cursive;
+  margin-bottom: 20px;
+}
+
+.reveal-button {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  font-family: 'Lobster', cursive;
+  z-index: 2;
+}
+
+.reveal-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Confetti Animation */
+.confetti-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #f00;
+  opacity: 0;
+  animation: confetti-fall 5s linear infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .transition-image {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .transition-content h2 {
+    font-size: 1.6rem;
+  }
+  
+  .transition-content p {
+    font-size: 1rem;
+  }
+  
+  .reveal-button {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .transition-image {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .transition-content {
+    padding: 20px;
+  }
+  
+  .transition-content h2 {
+    font-size: 1.4rem;
+  }
+  
+  .transition-content p {
+    font-size: 0.9rem;
+  }
+  
+  .reveal-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .transition-image {
+    width: 100px;
+    height: 100px;
+  }
+}
+

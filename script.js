@@ -1,4 +1,68 @@
-// Balloon animation function
+// DOM Elements
+const loginButton = document.getElementById("loginButton");
+const firstPage = document.getElementById("firstPage");
+const secondPage = document.getElementById("secondPage");
+const thirdPage = document.getElementById("thirdPage");
+const questionnairePage = document.getElementById("questionnairePage");
+const transitionPage = document.getElementById("transitionPage");
+const backgroundMusic = document.getElementById("backgroundMusic");
+const romanticSong = document.getElementById("romanticSong");
+const errorMessage = document.getElementById("errorMessage");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const yesButton = document.getElementById("yesButton");
+const noButton = document.getElementById("noButton");
+const revealButton = document.getElementById("revealButton");
+const clickHereBtn = document.getElementById("clickHereBtn");
+
+// Quiz Elements
+const questionText = document.getElementById("questionText");
+const optionsContainer = document.getElementById("optionsContainer");
+const nextButton = document.getElementById("nextButton");
+const progressBar = document.getElementById("progressBar");
+
+// Quiz Variables
+let currentQuestion = 0;
+let userResponses = [];
+let emojisActive = false; // Tracks if emojis are running
+const questions = [
+    {
+        question: "What's my favorite color?",
+        options: ["Blue", "Red", "Green", "Black"],
+        correct: 0
+    },
+    {
+        question: "Where did we first meet?",
+        options: ["College", "Cafe", "Park", "Through friends"],
+        correct: 1
+    },
+    {
+        question: "What's my favorite food?",
+        options: ["Pizza", "Pasta", "Burger", "Sushi"],
+        correct: 3
+    },
+    {
+        question: "What's my dream vacation?",
+        options: ["Paris", "Maldives", "Japan", "Switzerland"],
+        correct: 2
+    },
+    {
+        question: "What quality do you love most about me?",
+        options: ["Kindness", "Intelligence", "Humor", "Everything"],
+        correct: 3
+    }
+];
+
+// Animation Variables
+const romanticEmojis = ['💖', '😇', '🌞', '💌', '💕', '🐥', '🍕', '🤭', '💙', '🥳', '💛', '💜', '🤗', '🍒', '🌈', '🥰', '🌸', '🌹', '🌺', '🌷', '💐', '🏵️', '🎀', '🎁', '🎆', '✨', '🎇', '🎉', '🎊', '💍', '💎','✈️','🥞'];
+let emojiInterval = null;
+let fireworksController = null;
+let confettiCreated = false;
+
+// Initialize audio
+romanticSong.loop = false;
+
+// Balloon animation
 function randomizeBalloons() {
     const balloons = document.querySelectorAll('.balloon');
     balloons.forEach((balloon) => {
@@ -11,8 +75,111 @@ function randomizeBalloons() {
     });
 }
 
-// Fireworks animation controller
-let fireworksController = null;
+
+function createFlyingEmojis() {
+    if (emojiInterval) clearInterval(emojiInterval);
+    
+    // Create initial burst of emojis
+    for (let i = 0; i < 15; i++) {
+        createSingleEmoji();
+    }
+    
+    // Then continue with interval
+    emojiInterval = setInterval(createSingleEmoji, 600);
+}
+
+function createSingleEmoji() {
+    const emoji = document.createElement('div');
+    emoji.className = 'flying-emoji';
+    emoji.textContent = romanticEmojis[Math.floor(Math.random() * romanticEmojis.length)];
+    
+    // Random path (1-8)
+    const path = Math.floor(Math.random() * 8) + 1;
+    emoji.classList.add(`path${path}`);
+    
+    // Position randomly across the entire screen
+    const startX = Math.random() * 100;
+    const startY = Math.random() * 100;
+    
+    // Set initial position based on path
+    switch(path) {
+        case 1: // left
+            emoji.style.left = '0';
+            emoji.style.top = `${startY}vh`;
+            break;
+        case 2: // right
+            emoji.style.right = '0';
+            emoji.style.top = `${startY}vh`;
+            break;
+        case 3: // top
+            emoji.style.left = `${startX}vw`;
+            emoji.style.top = '0';
+            break;
+        case 4: // bottom
+            emoji.style.left = `${startX}vw`;
+            emoji.style.bottom = '0';
+            break;
+        case 5: // top-left diagonal
+            emoji.style.left = `${startX * 0.5}vw`; // More concentrated on left
+            emoji.style.top = `${Math.min(startY, 30)}vh`; // Upper portion
+            break;
+        case 6: // top-right diagonal
+            emoji.style.right = `${startX * 0.5}vw`; // More concentrated on right
+            emoji.style.top = `${Math.min(startY, 30)}vh`; // Upper portion
+            break;
+        case 7: // bottom-left diagonal
+            emoji.style.left = `${startX * 0.5}vw`; // More concentrated on left
+            emoji.style.bottom = `${Math.min(startY, 30)}vh`; // Lower portion
+            break;
+        case 8: // bottom-right diagonal
+            emoji.style.right = `${startX * 0.5}vw`; // More concentrated on right
+            emoji.style.bottom = `${Math.min(startY, 30)}vh`; // Lower portion
+            break;
+    }
+    
+    // Slower animation duration
+    const duration = 6 + Math.random() * 5; // 6-10 seconds
+    emoji.style.animationDuration = `${duration}s`;
+    
+    // Random size
+    const size = 0.8 + Math.random() * 1.9;
+    emoji.style.fontSize = `${size}rem`;
+    
+    // Random rotation direction
+    const rotationDirection = Math.random() > 0.5 ? 1 : -1;
+    emoji.style.setProperty('--rotation-direction', rotationDirection);
+    
+    // Add to document body
+    document.body.appendChild(emoji);
+    
+    // Remove emoji after animation
+    setTimeout(() => {
+        if (emoji.parentNode) {
+            emoji.parentNode.removeChild(emoji);
+        }
+    }, duration * 1000);
+}
+
+// Confetti animation
+function createConfetti() {
+    if (confettiCreated) return;
+    confettiCreated = true;
+    
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+    const container = document.querySelector('.confetti-container');
+    container.innerHTML = '';
+    
+    for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 5 + 's';
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = Math.random() * 10 + 5 + 'px';
+        container.appendChild(confetti);
+    }
+}
 
 // Fireworks animation
 function setupFireworks() {
@@ -113,6 +280,111 @@ function setupFireworks() {
     };
 }
 
+// EmailJS Integration
+function sendEmailResponse(answer) {
+    const templateID = answer === "YES" 
+        ? "template_27cmk4s"
+        : "template_7wjbket";
+
+    const templateParams = {
+        answer: answer,
+        date: new Date().toLocaleString(),
+        message: answer === "YES" 
+            ? "She said YES! 🎉 Time to celebrate!" 
+            : "She said NO... 😢 Keep trying!"
+    };
+
+    emailjs.send(
+        "service_xxjfb4o",
+        templateID,
+        templateParams
+    ).then(
+        () => console.log("Email sent successfully!"),
+        (error) => console.error("Failed to send email:", error)
+    );
+}
+
+function sendQuizResponses() {
+    let responseText = "Quiz Responses:\n";
+    questions.forEach((q, i) => {
+        responseText += `${i+1}. ${q.question}\n`;
+        responseText += `Answer: ${q.options[userResponses[i]]}\n\n`;
+    });
+    
+    emailjs.send("service_xxjfb4o", "template_27cmk4s", {
+        responses: responseText,
+        date: new Date().toLocaleString()
+    });
+}
+
+// Quiz Functions
+function loadQuestion() {
+    const question = questions[currentQuestion];
+    questionText.textContent = `${currentQuestion + 1}. ${question.question}`;
+    
+    optionsContainer.innerHTML = "";
+    
+    question.options.forEach((option, index) => {
+        const optionElement = document.createElement("div");
+        optionElement.className = "option";
+        optionElement.innerHTML = `
+            <input type="radio" name="quizOption" id="option-${index}" value="${index}">
+            <label for="option-${index}">${option}</label>
+        `;
+        optionElement.addEventListener("click", (e) => {
+            if (e.target.tagName !== 'INPUT') {
+                optionElement.querySelector('input').checked = true;
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                optionElement.classList.add('selected');
+                userResponses[currentQuestion] = index;
+            }
+        });
+        optionsContainer.appendChild(optionElement);
+    });
+    
+    progressBar.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+    nextButton.textContent = currentQuestion === questions.length - 1 ? "Submit" : "Next";
+}
+
+function handleNextQuestion() {
+    if (typeof userResponses[currentQuestion] === "undefined") {
+        alert("Please select an option!");
+        return;
+    }
+    
+    // Clean up emojis before proceeding
+    if (emojiInterval) {
+        clearInterval(emojiInterval);
+        document.querySelectorAll('.flying-emoji').forEach(emoji => {
+            if (emoji.parentNode) {
+                emoji.parentNode.removeChild(emoji);
+            }
+        });
+    }
+    
+    currentQuestion++;
+    
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+        createFlyingEmojis();
+    } else {
+        questionnairePage.style.opacity = "0";
+        setTimeout(() => {
+            questionnairePage.classList.add("hidden");
+            transitionPage.classList.remove("hidden");
+            transitionPage.style.opacity = "1";
+            createConfetti();
+            localStorage.setItem("proposalResponses", JSON.stringify({
+                responses: userResponses,
+                timestamp: new Date()
+            }));
+            sendQuizResponses();
+        }, 500);
+    }
+}
+
 // Popup Handling
 function setupPopup() {
     const yesPopupOverlay = document.getElementById('yesPopupOverlay');
@@ -120,47 +392,48 @@ function setupPopup() {
     const yesPopupCloseBtn = document.getElementById('yesPopupCloseBtn');
     const noPopupCloseBtn = document.getElementById('noPopupCloseBtn');
 
-    // Handle Yes button click
     yesButton.addEventListener('click', () => {
         yesPopupOverlay.classList.add('active');
+        sendEmailResponse("YES");
     });
 
-    // Handle No button click
     noButton.addEventListener('click', () => {
         noPopupOverlay.classList.add('active');
+        sendEmailResponse("NO");
     });
 
-    // Common function to reset to first page
     function resetToFirstPage() {
-        // Stop the romantic song
         romanticSong.pause();
         romanticSong.currentTime = 0;
         
-        // Stop the fireworks
         if (fireworksController) {
             fireworksController.stop();
             fireworksController = null;
         }
         
-        // Hide third page and show first page with transition
+        if (emojiInterval) {
+            clearInterval(emojiInterval);
+            document.querySelectorAll('.flying-emoji').forEach(emoji => {
+                if (emoji.parentNode) {
+                    emoji.parentNode.removeChild(emoji);
+                }
+            });
+        }
+        
         thirdPage.style.opacity = "0";
         setTimeout(() => {
             thirdPage.classList.add("hidden");
             firstPage.classList.remove("hidden");
             firstPage.style.opacity = "1";
-            
-            // Clear the password field but keep username
             passwordInput.value = "";
         }, 500);
     }
 
-    // Close handler for Yes popup
     yesPopupCloseBtn.addEventListener('click', () => {
         yesPopupOverlay.classList.remove('active');
         resetToFirstPage();
     });
 
-    // Close handler for No popup
     noPopupCloseBtn.addEventListener('click', () => {
         noPopupOverlay.classList.remove('active');
         resetToFirstPage();
@@ -175,26 +448,6 @@ function setupClickHereButton() {
     clickHereBtn.id = 'clickHereBtn';
     clickHereBtn.className = 'click-here-btn';
     greetingCard.appendChild(clickHereBtn);
-
-    clickHereBtn.style.display = 'block';
-    clickHereBtn.style.margin = '10px auto';
-    clickHereBtn.style.padding = '12px 25px';
-    clickHereBtn.style.backgroundColor = '#ff6f61';
-    clickHereBtn.style.color = 'white';
-    clickHereBtn.style.border = 'none';
-    clickHereBtn.style.borderRadius = '50px';
-    clickHereBtn.style.cursor = 'pointer';
-    clickHereBtn.style.fontFamily = "'Lobster', cursive";
-    clickHereBtn.style.transition = 'all 0.3s ease';
-    clickHereBtn.style.fontSize = '1.2rem';
-
-    clickHereBtn.addEventListener('mouseenter', () => {
-        clickHereBtn.style.transform = 'scale(1.1)';
-    });
-
-    clickHereBtn.addEventListener('mouseleave', () => {
-        clickHereBtn.style.transform = 'scale(1)';
-    });
 
     clickHereBtn.addEventListener('click', () => {
         backgroundMusic.pause();
@@ -257,30 +510,17 @@ function handleLogin() {
         firstPage.style.opacity = "0";
         setTimeout(() => {
             firstPage.classList.add("hidden");
-            secondPage.classList.remove("hidden");
-            secondPage.style.opacity = "1";
-            handleMusicPlay();
-            randomizeBalloons();
+            questionnairePage.classList.remove("hidden");
+            questionnairePage.style.opacity = "1";
+            loadQuestion();
+            createFlyingEmojis();
         }, 1000);
     }
 }
 
-// DOM Elements
-const loginButton = document.getElementById("loginButton");
-const firstPage = document.getElementById("firstPage");
-const secondPage = document.getElementById("secondPage");
-const thirdPage = document.getElementById("thirdPage");
-const backgroundMusic = document.getElementById("backgroundMusic");
-const romanticSong = document.getElementById("romanticSong");
-romanticSong.loop = false;
-const errorMessage = document.getElementById("errorMessage");
-const usernameInput = document.getElementById("username");
-const passwordInput = document.getElementById("password");
-const yesButton = document.getElementById("yesButton");
-const noButton = document.getElementById("noButton");
-
 // Initialize the page
 function init() {
+    // Setup all event listeners
     setupClickHereButton();
     setupPopup();
     
@@ -289,13 +529,33 @@ function init() {
         if (e.key === "Enter") handleLogin();
     });
 
+    if (nextButton) {
+        nextButton.addEventListener("click", handleNextQuestion);
+    }
+
+    if (revealButton) {
+        revealButton.addEventListener("click", () => {
+            transitionPage.style.opacity = "0";
+            setTimeout(() => {
+                transitionPage.classList.add("hidden");
+                secondPage.classList.remove("hidden");
+                secondPage.style.opacity = "1";
+                handleMusicPlay();
+                randomizeBalloons();
+            }, 500);
+        });
+    }
+
+    // Initialize animations
     setInterval(randomizeBalloons, 6000);
 
+    // Preload audio
     window.addEventListener('load', () => {
         backgroundMusic.load();
         romanticSong.load();
     });
 
+    // Handle window resize
     window.addEventListener('resize', () => {
         const canvas = document.getElementById('fireworksCanvas');
         if (canvas) {
@@ -306,4 +566,4 @@ function init() {
 }
 
 // Start the application
-init();
+document.addEventListener('DOMContentLoaded', init);

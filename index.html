@@ -12,6 +12,11 @@
     <link rel="icon" type="image/png" href="Virat.png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Add EmailJS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init("IoEPhOmi7_VpNBiKM"); // Replace with your EmailJS public key
+    </script>
 </head>
 <body>
     <!-- First Page -->
@@ -32,6 +37,36 @@
             </div>
         </div>
     </div>
+
+
+    <div id="questionnairePage" class="page hidden">
+        <div class="quiz-container">
+            <h2>Let's Play a Quick Game!</h2>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="question-container">
+                <h3 id="questionText">Question</h3>
+                <div class="options-container" id="optionsContainer">
+                    <!-- Options will be added here -->
+                </div>
+            </div>
+            <button id="nextButton" class="quiz-button">Next</button>
+        </div>
+    </div>
+
+
+    <!-- Transition Page -->
+    <div id="transitionPage" class="page hidden">
+        <div class="transition-content">
+            <img src="Surprise.gif" alt="Celebration" class="transition-image">
+            <h2>Get Ready for the Surprise!</h2>
+            <p>You answered all the questions perfectly! Now it's time for Surprise...🫣</p>
+            <div class="confetti-container"></div>
+            <button id="revealButton" class="reveal-button">Reveal It 👀</button>
+        </div>
+    </div>
+
 
     <!-- Second Page -->
     <div id="secondPage" class="page hidden">
