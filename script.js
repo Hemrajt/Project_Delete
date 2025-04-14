@@ -1,4 +1,6 @@
+// ==============================================
 // DOM Elements
+// ==============================================
 const loginButton = document.getElementById("loginButton");
 const firstPage = document.getElementById("firstPage");
 const secondPage = document.getElementById("secondPage");
@@ -7,13 +9,16 @@ const questionnairePage = document.getElementById("questionnairePage");
 const transitionPage = document.getElementById("transitionPage");
 const backgroundMusic = document.getElementById("backgroundMusic");
 const romanticSong = document.getElementById("romanticSong");
+const loginMusic = document.getElementById("loginMusic");
 const errorMessage = document.getElementById("errorMessage");
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
 const yesButton = document.getElementById("yesButton");
 const noButton = document.getElementById("noButton");
+const takeTimeButton = document.getElementById("takeTimeButton");
 const revealButton = document.getElementById("revealButton");
 const clickHereBtn = document.getElementById("clickHereBtn");
+const musicFallbackBtn = document.getElementById("musicFallbackBtn");
 
 // Quiz Elements
 const questionText = document.getElementById("questionText");
@@ -21,39 +26,58 @@ const optionsContainer = document.getElementById("optionsContainer");
 const nextButton = document.getElementById("nextButton");
 const progressBar = document.getElementById("progressBar");
 
+// Popup Elements
+const yesPopupOverlay = document.getElementById("yesPopupOverlay");
+const noPopupOverlay = document.getElementById("noPopupOverlay");
+const takeTimePopupOverlay = document.getElementById("takeTimePopupOverlay");
+const yesPopupCloseBtn = document.getElementById("yesPopupCloseBtn");
+const noPopupCloseBtn = document.getElementById("noPopupCloseBtn");
+const takeTimePopupCloseBtn = document.getElementById("takeTimePopupCloseBtn");
+
+// ==============================================
 // Quiz Variables
+// ==============================================
 let currentQuestion = 0;
 let userResponses = [];
-let emojisActive = false; // Tracks if emojis are running
+let emojisActive = false;
 const questions = [
     {
-        question: "What's my favorite color?",
-        options: ["Blue", "Red", "Green", "Black"],
-        correct: 0
-    },
-    {
-        question: "Where did we first meet?",
-        options: ["College", "Cafe", "Park", "Through friends"],
+        question: "What is your favorite fruit? 🍉",
+        options: ["Mango", "Orange/आंत्री", "Blueberry", "Pineapple"],
         correct: 1
     },
     {
-        question: "What's my favorite food?",
-        options: ["Pizza", "Pasta", "Burger", "Sushi"],
-        correct: 3
-    },
-    {
-        question: "What's my dream vacation?",
-        options: ["Paris", "Maldives", "Japan", "Switzerland"],
+        question: "Which dessert does Aishwarya love the most? 🍰",
+        options: ["Ice Cream", "Chocolate Cake", "Tiramisu", "Kaju Katli"],
         correct: 2
     },
     {
-        question: "What quality do you love most about me?",
+        question: "What is your favorite season? ⛅",
+        options: ["Winter", "Summer", "Monsoon", "Spring"],
+        correct: 0
+    },
+    {
+        question: "Which is your favorite travel destination? ✈️",
+        options: ["Kashmir", "Kedarnath", "Goa", "Kerala"],
+        correct: 1
+    },
+    {
+        question: "What quality do you love most about me? 🤭",
         options: ["Kindness", "Intelligence", "Humor", "Everything"],
         correct: 3
     }
 ];
 
+// ==============================================
+// Audio Variables
+// ==============================================
+let loginMusicPlayCount = 0;
+const MAX_LOGIN_PLAYS = 2;
+let loginMusicInitialized = false;
+
+// ==============================================
 // Animation Variables
+// ==============================================
 const romanticEmojis = ['💖', '😇', '🌞', '💌', '💕', '🐥', '🍕', '🤭', '💙', '🥳', '💛', '💜', '🤗', '🍒', '🌈', '🥰', '🌸', '🌹', '🌺', '🌷', '💐', '🏵️', '🎀', '🎁', '🎆', '✨', '🎇', '🎉', '🎊', '💍', '💎','✈️','🥞'];
 let emojiInterval = null;
 let fireworksController = null;
@@ -61,33 +85,120 @@ let confettiCreated = false;
 
 // Initialize audio
 romanticSong.loop = false;
+loginMusic.loop = false;
 
-// Balloon animation
+// ==============================================
+// Audio Functions
+// ==============================================
+
+/**
+ * Handles login page music playback
+ */
+function handleLoginMusic() {
+    if (!loginMusicInitialized) {
+        loginMusic.addEventListener('error', function() {
+            console.error("Login music error:", loginMusic.error);
+            showMusicPlayButton();
+        });
+        
+        loginMusic.addEventListener('ended', handleMusicEnd);
+        loginMusicInitialized = true;
+    }
+
+    // Reset play count
+    loginMusicPlayCount = 0;
+    
+    try {
+        loginMusic.currentTime = 0;
+        const playPromise = loginMusic.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Login music autoplay prevented:", error);
+                showMusicPlayButton();
+            });
+        }
+    } catch (error) {
+        console.error("Login music play error:", error);
+        showMusicPlayButton();
+    }
+}
+
+function handleMusicEnd() {
+    loginMusicPlayCount++;
+    if (loginMusicPlayCount < MAX_LOGIN_PLAYS) {
+        loginMusic.currentTime = 0;
+        loginMusic.play().catch(e => console.log("Login music replay failed:", e));
+    } else {
+        loginMusic.pause();
+        loginMusic.currentTime = 0;
+    }
+}
+
+function showMusicPlayButton() {
+    if (!musicFallbackBtn) return;
+    
+    musicFallbackBtn.style.display = 'block';
+    musicFallbackBtn.addEventListener('click', function playMusicOnce() {
+        handleLoginMusic();
+        musicFallbackBtn.style.display = 'none';
+        musicFallbackBtn.removeEventListener('click', playMusicOnce);
+    });
+}
+
+function hideMusicPlayButton() {
+    if (musicFallbackBtn) {
+        musicFallbackBtn.style.display = 'none';
+    }
+}
+
+// ==============================================
+// Animation Functions
+// ==============================================
+
+/**
+ * Randomizes balloon positions and animations
+ */
 function randomizeBalloons() {
     const balloons = document.querySelectorAll('.balloon');
     balloons.forEach((balloon) => {
         const randomLeft = Math.random() * 80 + 10;
         const randomDelay = Math.random() * 6;
+        const randomDuration = Math.random() * 3 + 4;
+        const randomSize = Math.random() * 30 + 70;
+        
         balloon.style.left = `${randomLeft}%`;
-        balloon.style.bottom = `-10vh`;
+        balloon.style.bottom = `-15vh`;
         balloon.style.animationDelay = `${randomDelay}s`;
-        balloon.style.opacity = '1';
+        balloon.style.animationDuration = `${randomDuration}s`;
+        balloon.style.width = `${randomSize}px`;
+        balloon.style.height = `${randomSize * 1.2}px`;
+        balloon.style.opacity = '0.9';
     });
 }
 
-
+/**
+ * Creates flying emojis animation
+ */
 function createFlyingEmojis() {
     if (emojiInterval) clearInterval(emojiInterval);
     
     // Create initial burst of emojis
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 25; i++) {
         createSingleEmoji();
     }
     
     // Then continue with interval
-    emojiInterval = setInterval(createSingleEmoji, 600);
+    emojiInterval = setInterval(() => {
+        if (document.querySelectorAll('.flying-emoji').length < 50) {
+            createSingleEmoji();
+        }
+    }, 500);
 }
 
+/**
+ * Creates a single flying emoji with random properties
+ */
 function createSingleEmoji() {
     const emoji = document.createElement('div');
     emoji.className = 'flying-emoji';
@@ -104,49 +215,48 @@ function createSingleEmoji() {
     // Set initial position based on path
     switch(path) {
         case 1: // left
-            emoji.style.left = '0';
+            emoji.style.left = `-5vw`;
             emoji.style.top = `${startY}vh`;
             break;
         case 2: // right
-            emoji.style.right = '0';
+            emoji.style.right = `-5vw`;
             emoji.style.top = `${startY}vh`;
             break;
         case 3: // top
             emoji.style.left = `${startX}vw`;
-            emoji.style.top = '0';
+            emoji.style.top = `-5vh`;
             break;
         case 4: // bottom
             emoji.style.left = `${startX}vw`;
-            emoji.style.bottom = '0';
+            emoji.style.bottom = `-5vh`;
             break;
         case 5: // top-left diagonal
-            emoji.style.left = `${startX * 0.5}vw`; // More concentrated on left
-            emoji.style.top = `${Math.min(startY, 30)}vh`; // Upper portion
+            emoji.style.left = `${startX * 0.3}vw`;
+            emoji.style.top = `${Math.min(startY, 20)}vh`;
             break;
         case 6: // top-right diagonal
-            emoji.style.right = `${startX * 0.5}vw`; // More concentrated on right
-            emoji.style.top = `${Math.min(startY, 30)}vh`; // Upper portion
+            emoji.style.right = `${startX * 0.3}vw`;
+            emoji.style.top = `${Math.min(startY, 20)}vh`;
             break;
         case 7: // bottom-left diagonal
-            emoji.style.left = `${startX * 0.5}vw`; // More concentrated on left
-            emoji.style.bottom = `${Math.min(startY, 30)}vh`; // Lower portion
+            emoji.style.left = `${startX * 0.3}vw`;
+            emoji.style.bottom = `${Math.min(startY, 20)}vh`;
             break;
         case 8: // bottom-right diagonal
-            emoji.style.right = `${startX * 0.5}vw`; // More concentrated on right
-            emoji.style.bottom = `${Math.min(startY, 30)}vh`; // Lower portion
+            emoji.style.right = `${startX * 0.3}vw`;
+            emoji.style.bottom = `${Math.min(startY, 20)}vh`;
             break;
     }
     
-    // Slower animation duration
-    const duration = 6 + Math.random() * 5; // 6-10 seconds
-    emoji.style.animationDuration = `${duration}s`;
-    
-    // Random size
-    const size = 0.8 + Math.random() * 1.9;
-    emoji.style.fontSize = `${size}rem`;
-    
-    // Random rotation direction
+    // Random animation properties
+    const duration = 8 + Math.random() * 7;
+    const size = 0.8 + Math.random() * 2.2;
+    const opacity = 0.7 + Math.random() * 0.3;
     const rotationDirection = Math.random() > 0.5 ? 1 : -1;
+    
+    emoji.style.animationDuration = `${duration}s`;
+    emoji.style.fontSize = `${size}rem`;
+    emoji.style.opacity = opacity;
     emoji.style.setProperty('--rotation-direction', rotationDirection);
     
     // Add to document body
@@ -160,28 +270,33 @@ function createSingleEmoji() {
     }, duration * 1000);
 }
 
-// Confetti animation
+/**
+ * Creates confetti animation
+ */
 function createConfetti() {
     if (confettiCreated) return;
     confettiCreated = true;
     
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff69b4', '#ffa500'];
     const container = document.querySelector('.confetti-container');
     container.innerHTML = '';
     
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 150; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti';
         confetti.style.left = Math.random() * 100 + 'vw';
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         confetti.style.animationDelay = Math.random() * 5 + 's';
-        confetti.style.width = Math.random() * 10 + 5 + 'px';
-        confetti.style.height = Math.random() * 10 + 5 + 'px';
+        confetti.style.width = Math.random() * 12 + 3 + 'px';
+        confetti.style.height = Math.random() * 12 + 3 + 'px';
+        confetti.style.animationDuration = (3 + Math.random() * 4) + 's';
         container.appendChild(confetti);
     }
 }
 
-// Fireworks animation
+/**
+ * Sets up fireworks animation
+ */
 function setupFireworks() {
     if (fireworksController) {
         fireworksController.stop();
@@ -200,13 +315,14 @@ function setupFireworks() {
     const particles = [];
     const colors = ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff', '#ff69b4', '#ffa500'];
     
-    function createFirework(x, y) {
-        const particleCount = 100;
-        const power = 4;
+    function createFirework(x, y, isInitial = false) {
+        const particleCount = isInitial ? 150 : 100;
+        const power = isInitial ? 6 : 4;
+        const sizeMultiplier = isInitial ? 1.5 : 1;
         
         for (let i = 0; i < particleCount; i++) {
             const angle = Math.random() * Math.PI * 2;
-            const speed = Math.random() * power + 2;
+            const speed = (Math.random() * power + 2) * (isInitial ? 1.2 : 1);
             
             particles.push({
                 x: x,
@@ -215,15 +331,16 @@ function setupFireworks() {
                 vy: Math.sin(angle) * speed,
                 color: colors[Math.floor(Math.random() * colors.length)],
                 alpha: 1,
-                size: Math.random() * 3 + 1,
-                decay: Math.random() * 0.005 + 0.005
+                size: (Math.random() * 3 + 1) * sizeMultiplier,
+                decay: Math.random() * 0.005 + 0.003
             });
         }
     }
     
     let animationId;
+    let lastFireworkTime = 0;
     
-    function animate() {
+    function animate(currentTime) {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
@@ -247,25 +364,30 @@ function setupFireworks() {
             }
         }
         
-        if (Math.random() < 0.04) {
+        // Create new fireworks randomly but not too frequently
+        if ((currentTime - lastFireworkTime > 800 || lastFireworkTime === 0) && 
+            (Math.random() < 0.05 || particles.length < 30)) {
             createFirework(
                 Math.random() * canvas.width,
                 Math.random() * canvas.height / 2
             );
+            lastFireworkTime = currentTime;
         }
         
         animationId = requestAnimationFrame(animate);
     }
     
-    animate();
+    animationId = requestAnimationFrame(animate);
     
-    for (let i = 0; i < 5; i++) {
+    // Create initial fireworks burst
+    for (let i = 0; i < 8; i++) {
         setTimeout(() => {
             createFirework(
                 Math.random() * canvas.width,
-                Math.random() * canvas.height / 2
+                Math.random() * canvas.height / 2,
+                true
             );
-        }, i * 800);
+        }, i * 300);
     }
 
     romanticSong.currentTime = 0;
@@ -280,18 +402,43 @@ function setupFireworks() {
     };
 }
 
-// EmailJS Integration
+// ==============================================
+// Email Functions
+// ==============================================
+
+/**
+ * Sends email response
+ * @param {string} answer - The response type (YES/NO/TAKE_TIME)
+ */
 function sendEmailResponse(answer) {
-    const templateID = answer === "YES" 
-        ? "template_27cmk4s"
-        : "template_7wjbket";
+    let templateID;
+    let message = "";
+    let subject = "";
+    
+    switch(answer) {
+        case "YES":
+            templateID = "template_27cmk4s";
+            subject = "💖 She Said Yes! 💖";
+            message = "Aishwarya said YES to your proposal! 🎉 Time to celebrate this beautiful moment!";
+            break;
+        case "NO":
+            templateID = "template_7wjbket"; // Different template for NO responses
+            subject = "😢 She Needs More Time";
+            message = "Aishwarya isn't ready yet... 😢 But don't give up! Keep trying to win her heart!";
+            break;
+        case "TAKE_TIME":
+            templateID = "template_27cmk4s";
+            subject = "⏳ She's Thinking About It";
+            message = "Aishwarya wants more time to consider your proposal... ⏳ She'll give you an answer when she's ready!";
+            break;
+    }
 
     const templateParams = {
         answer: answer,
+        subject: subject,
+        message: message,
         date: new Date().toLocaleString(),
-        message: answer === "YES" 
-            ? "She said YES! 🎉 Time to celebrate!" 
-            : "She said NO... 😢 Keep trying!"
+        username: usernameInput.value.trim()
     };
 
     emailjs.send(
@@ -304,20 +451,41 @@ function sendEmailResponse(answer) {
     );
 }
 
+/**
+ * Sends quiz responses via email
+ */
 function sendQuizResponses() {
-    let responseText = "Quiz Responses:\n";
+    let responseText = "Quiz Responses from Aishwarya:\n\n";
+    let correctCount = 0;
+    
     questions.forEach((q, i) => {
+        const isCorrect = userResponses[i] === q.correct;
+        if (isCorrect) correctCount++;
+        
         responseText += `${i+1}. ${q.question}\n`;
-        responseText += `Answer: ${q.options[userResponses[i]]}\n\n`;
+        responseText += `Selected: ${q.options[userResponses[i]]} ${isCorrect ? '✅' : '❌'}\n`;
+        responseText += `Correct: ${q.options[q.correct]}\n\n`;
     });
     
+    const score = Math.round((correctCount / questions.length) * 100);
+    const subject = `Quiz Results: ${score}% Correct`;
+    const message = `${responseText}\nFinal Score: ${correctCount}/${questions.length} (${score}%)`;
+    
     emailjs.send("service_xxjfb4o", "template_27cmk4s", {
-        responses: responseText,
-        date: new Date().toLocaleString()
+        subject: subject,
+        responses: message,
+        date: new Date().toLocaleString(),
+        username: usernameInput.value.trim()
     });
 }
 
+// ==============================================
 // Quiz Functions
+// ==============================================
+
+/**
+ * Loads the current question
+ */
 function loadQuestion() {
     const question = questions[currentQuestion];
     questionText.textContent = `${currentQuestion + 1}. ${question.question}`;
@@ -327,8 +495,12 @@ function loadQuestion() {
     question.options.forEach((option, index) => {
         const optionElement = document.createElement("div");
         optionElement.className = "option";
+        if (userResponses[currentQuestion] === index) {
+            optionElement.classList.add("selected");
+        }
         optionElement.innerHTML = `
-            <input type="radio" name="quizOption" id="option-${index}" value="${index}">
+            <input type="radio" name="quizOption" id="option-${index}" value="${index}" 
+                   ${userResponses[currentQuestion] === index ? 'checked' : ''}>
             <label for="option-${index}">${option}</label>
         `;
         optionElement.addEventListener("click", (e) => {
@@ -348,13 +520,15 @@ function loadQuestion() {
     nextButton.textContent = currentQuestion === questions.length - 1 ? "Submit" : "Next";
 }
 
+/**
+ * Handles moving to the next question
+ */
 function handleNextQuestion() {
     if (typeof userResponses[currentQuestion] === "undefined") {
         alert("Please select an option!");
         return;
     }
     
-    // Clean up emojis before proceeding
     if (emojiInterval) {
         clearInterval(emojiInterval);
         document.querySelectorAll('.flying-emoji').forEach(emoji => {
@@ -385,13 +559,76 @@ function handleNextQuestion() {
     }
 }
 
-// Popup Handling
-function setupPopup() {
-    const yesPopupOverlay = document.getElementById('yesPopupOverlay');
-    const noPopupOverlay = document.getElementById('noPopupOverlay');
-    const yesPopupCloseBtn = document.getElementById('yesPopupCloseBtn');
-    const noPopupCloseBtn = document.getElementById('noPopupCloseBtn');
+// ==============================================
+// Popup Functions
+// ==============================================
 
+/**
+ * Resets the application to first page
+ */
+function resetToFirstPage() {
+    // Stop all audio
+    romanticSong.pause();
+    romanticSong.currentTime = 0;
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
+    
+    // Stop login music if playing
+    loginMusic.pause();
+    loginMusic.currentTime = 0;
+    hideMusicPlayButton();
+    
+    // Stop fireworks if active
+    if (fireworksController) {
+        fireworksController.stop();
+        fireworksController = null;
+    }
+    
+    // Stop emoji animation
+    if (emojiInterval) {
+        clearInterval(emojiInterval);
+        document.querySelectorAll('.flying-emoji').forEach(emoji => {
+            if (emoji.parentNode) {
+                emoji.parentNode.removeChild(emoji);
+            }
+        });
+    }
+    
+    // Reset quiz state
+    currentQuestion = 0;
+    userResponses = [];
+    
+    // Reset scroll positions
+    const greetingCardContent = document.querySelector('.greeting-card-content');
+    if (greetingCardContent) {
+        greetingCardContent.scrollTop = 0;
+    }
+    
+    // Clear any selected options
+    document.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    document.querySelectorAll('input[name="quizOption"]').forEach(radio => {
+        radio.checked = false;
+    });
+    
+    // Transition back to first page
+    thirdPage.style.opacity = "0";
+    setTimeout(() => {
+        thirdPage.classList.add("hidden");
+        firstPage.classList.remove("hidden");
+        firstPage.style.opacity = "1";
+        passwordInput.value = "";
+        
+        // Start login music when returning to first page
+        handleLoginMusic();
+    }, 500);
+}
+
+/**
+ * Sets up all popup functionality
+ */
+function setupPopup() {
     yesButton.addEventListener('click', () => {
         yesPopupOverlay.classList.add('active');
         sendEmailResponse("YES");
@@ -402,33 +639,12 @@ function setupPopup() {
         sendEmailResponse("NO");
     });
 
-    function resetToFirstPage() {
-        romanticSong.pause();
-        romanticSong.currentTime = 0;
-        
-        if (fireworksController) {
-            fireworksController.stop();
-            fireworksController = null;
-        }
-        
-        if (emojiInterval) {
-            clearInterval(emojiInterval);
-            document.querySelectorAll('.flying-emoji').forEach(emoji => {
-                if (emoji.parentNode) {
-                    emoji.parentNode.removeChild(emoji);
-                }
-            });
-        }
-        
-        thirdPage.style.opacity = "0";
-        setTimeout(() => {
-            thirdPage.classList.add("hidden");
-            firstPage.classList.remove("hidden");
-            firstPage.style.opacity = "1";
-            passwordInput.value = "";
-        }, 500);
-    }
+    takeTimeButton.addEventListener('click', () => {
+        takeTimePopupOverlay.classList.add('active');
+        sendEmailResponse("TAKE_TIME");
+    });
 
+    // Setup close buttons
     yesPopupCloseBtn.addEventListener('click', () => {
         yesPopupOverlay.classList.remove('active');
         resetToFirstPage();
@@ -438,53 +654,83 @@ function setupPopup() {
         noPopupOverlay.classList.remove('active');
         resetToFirstPage();
     });
-}
 
-// Click Here Button
-function setupClickHereButton() {
-    const greetingCard = document.querySelector('.greeting-card');
-    const clickHereBtn = document.createElement('button');
-    clickHereBtn.textContent = 'Click Here 💌';
-    clickHereBtn.id = 'clickHereBtn';
-    clickHereBtn.className = 'click-here-btn';
-    greetingCard.appendChild(clickHereBtn);
-
-    clickHereBtn.addEventListener('click', () => {
-        backgroundMusic.pause();
-        backgroundMusic.currentTime = 0;
-
-        secondPage.style.opacity = "0";
-        setTimeout(() => {
-            secondPage.classList.add("hidden");
-            thirdPage.classList.remove("hidden");
-            thirdPage.style.opacity = "1";
-            fireworksController = setupFireworks();
-        }, 1000);
+    takeTimePopupCloseBtn.addEventListener('click', () => {
+        takeTimePopupOverlay.classList.remove('active');
+        resetToFirstPage();
     });
 }
 
-// Music Handler
+// ==============================================
+// Page Transition Functions
+// ==============================================
+
+/**
+ * Sets up the "Click Here" button functionality
+ */
+function setupClickHereButton() {
+    const greetingCard = document.querySelector('.greeting-card');
+    if (!clickHereBtn && greetingCard) {
+        const newClickHereBtn = document.createElement('button');
+        newClickHereBtn.textContent = 'Click Here 💌';
+        newClickHereBtn.id = 'clickHereBtn';
+        newClickHereBtn.className = 'click-here-btn';
+        greetingCard.appendChild(newClickHereBtn);
+
+        newClickHereBtn.addEventListener('click', () => {
+            // Reset scroll position before transition
+            document.querySelector('.greeting-card-content').scrollTop = 0;
+            
+            // Stop background music
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+
+            // Transition to third page
+            secondPage.style.opacity = "0";
+            setTimeout(() => {
+                secondPage.classList.add("hidden");
+                thirdPage.classList.remove("hidden");
+                thirdPage.style.opacity = "1";
+                fireworksController = setupFireworks();
+            }, 1000);
+        });
+    }
+}
+
+/**
+ * Handles music playback with fallback for autoplay restrictions
+ */
 function handleMusicPlay() {
     const playPromise = backgroundMusic.play();
     
     if (playPromise !== undefined) {
         playPromise.catch(error => {
+            // If autoplay is blocked, set up a one-time click handler to start music
             document.addEventListener('click', musicFallback, { once: true });
         });
     }
 }
 
+/**
+ * Fallback for music playback when autoplay is blocked
+ */
 function musicFallback() {
     backgroundMusic.play().catch(error => {
         console.log("Audio playback failed:", error);
     });
 }
 
-// Login Validation
+// ==============================================
+// Login Functions
+// ==============================================
+
+/**
+ * Validates login credentials
+ */
 function validateLogin() {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
-    const isValid = username === "Aishwarya" && password === "Aishu@999";
+    const isValid = username === "Aishwarya" && password === "Aishwarya@15";
     
     if (!isValid) {
         errorMessage.textContent = "Incorrect username or password";
@@ -499,14 +745,33 @@ function validateLogin() {
     return isValid;
 }
 
-// Login Handler
+/**
+ * Handles login process
+ */
 function handleLogin() {
     if (validateLogin()) {
         errorMessage.textContent = "";
         
+        // Stop login music
+        loginMusic.pause();
+        loginMusic.currentTime = 0;
+        hideMusicPlayButton();
+        
+        // Stop any romantic song that might be playing
         romanticSong.pause();
         romanticSong.currentTime = 0;
         
+        // Reset quiz state
+        currentQuestion = 0;
+        userResponses = [];
+        
+        // Reset scroll position
+        const greetingCardContent = document.querySelector('.greeting-card-content');
+        if (greetingCardContent) {
+            greetingCardContent.scrollTop = 0;
+        }
+        
+        // Transition to questionnaire
         firstPage.style.opacity = "0";
         setTimeout(() => {
             firstPage.classList.add("hidden");
@@ -518,23 +783,35 @@ function handleLogin() {
     }
 }
 
-// Initialize the page
+// ==============================================
+// Initialization
+// ==============================================
+
+/**
+ * Initializes the application
+ */
 function init() {
-    // Setup all event listeners
+    // Setup all interactive elements
     setupClickHereButton();
     setupPopup();
     
+    // Login event listeners
     loginButton.addEventListener("click", handleLogin);
     passwordInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") handleLogin();
     });
 
+    // Quiz navigation
     if (nextButton) {
         nextButton.addEventListener("click", handleNextQuestion);
     }
 
+    // Transition from reveal button
     if (revealButton) {
         revealButton.addEventListener("click", () => {
+            // Reset scroll position before showing second page
+            document.querySelector('.greeting-card-content').scrollTop = 0;
+            
             transitionPage.style.opacity = "0";
             setTimeout(() => {
                 transitionPage.classList.add("hidden");
@@ -546,16 +823,27 @@ function init() {
         });
     }
 
-    // Initialize animations
+    // Initialize balloon animations
     setInterval(randomizeBalloons, 6000);
 
     // Preload audio
     window.addEventListener('load', () => {
         backgroundMusic.load();
         romanticSong.load();
+        loginMusic.load();
+        
+        // Add canplay event to hide fallback button if music loads
+        loginMusic.addEventListener('canplay', () => {
+            hideMusicPlayButton();
+        });
+        
+        // Attempt to play login music automatically
+        setTimeout(() => {
+            handleLoginMusic();
+        }, 500); // Small delay to help with autoplay
     });
 
-    // Handle window resize
+    // Handle window resize for fireworks canvas
     window.addEventListener('resize', () => {
         const canvas = document.getElementById('fireworksCanvas');
         if (canvas) {
@@ -565,5 +853,5 @@ function init() {
     });
 }
 
-// Start the application
+// Start the application when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', init);

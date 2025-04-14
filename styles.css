@@ -10,7 +10,7 @@ body {
   align-items: center;
   text-align: center;
   color: #fff;
-  background: linear-gradient(145deg, #6096FD, #FAA7B8);
+  background: linear-gradient(145deg, #327aff, #FAA7B8);
 }
 
 .page {
@@ -34,7 +34,7 @@ body {
 
 /* First Page Styles */
 #firstPage {
-  background: linear-gradient(145deg, #6096FD, #FAA7B8);
+  background: linear-gradient(140deg, #327aff, #FAA7B8);
 }
 
 .content-wrapper {
@@ -449,7 +449,7 @@ p {
   color: #333;
   margin-bottom: 25px;
   line-height: 1.5;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Lobster', cursive;
 }
 
 .popup-close-btn {
@@ -1242,4 +1242,74 @@ p {
     height: 100px;
   }
 }
+
+
+
+/* Take your time button */
+/* Add to your existing CSS */
+#takeTimeButton {
+  background-color: #FFA500;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Lobster', cursive;
+  min-width: 180px;
+  transition: all 0.3s ease;
+  margin: 5px;
+}
+
+#takeTimeButton:hover {
+  background-color: #FF8C00;
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Adjust button layout for responsiveness */
+.response-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  z-index: 3;
+  position: relative;
+}
+
+/* Popup styling for the new take time popup */
+#takeTimePopupOverlay .popup-content {
+  background: linear-gradient(145deg, #fff8e1, #ffecb3);
+}
+
+#takeTimePopupOverlay h2 {
+  color: #FF8F00;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .response-buttons {
+      flex-direction: column;
+      align-items: center;
+  }
+  
+  .response-buttons button {
+      width: 80%;
+      margin: 5px 0;
+  }
+  
+  #takeTimeButton {
+      font-size: 1rem;
+      padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .response-buttons button {
+      min-width: 140px;
+      font-size: 0.9rem;
+  }
+}
+
 
