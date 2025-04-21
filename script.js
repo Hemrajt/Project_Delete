@@ -72,8 +72,9 @@ const questions = [
 // Audio Variables
 // ==============================================
 let loginMusicPlayCount = 0;
-const MAX_LOGIN_PLAYS = 2;
+const MAX_LOGIN_PLAYS = 1;
 let loginMusicInitialized = false;
+let loginMusicTimeout = null;
 
 // ==============================================
 // Animation Variables
@@ -92,36 +93,44 @@ loginMusic.loop = false;
 // ==============================================
 
 /**
- * Handles login page music playback
+ * Handles login page music playback with delay
  */
 function handleLoginMusic() {
-    if (!loginMusicInitialized) {
-        loginMusic.addEventListener('error', function() {
-            console.error("Login music error:", loginMusic.error);
-            showMusicPlayButton();
-        });
-        
-        loginMusic.addEventListener('ended', handleMusicEnd);
-        loginMusicInitialized = true;
+    // Clear any existing timeout
+    if (loginMusicTimeout) {
+        clearTimeout(loginMusicTimeout);
     }
-
-    // Reset play count
-    loginMusicPlayCount = 0;
     
-    try {
-        loginMusic.currentTime = 0;
-        const playPromise = loginMusic.play();
-        
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log("Login music autoplay prevented:", error);
+    // Set a new timeout for 2.5 seconds (2500ms)
+    loginMusicTimeout = setTimeout(() => {
+        if (!loginMusicInitialized) {
+            loginMusic.addEventListener('error', function() {
+                console.error("Login music error:", loginMusic.error);
                 showMusicPlayButton();
             });
+            
+            loginMusic.addEventListener('ended', handleMusicEnd);
+            loginMusicInitialized = true;
         }
-    } catch (error) {
-        console.error("Login music play error:", error);
-        showMusicPlayButton();
-    }
+
+        // Reset play count
+        loginMusicPlayCount = 0;
+        
+        try {
+            loginMusic.currentTime = 0;
+            const playPromise = loginMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Login music autoplay prevented:", error);
+                    showMusicPlayButton();
+                });
+            }
+        } catch (error) {
+            console.error("Login music play error:", error);
+            showMusicPlayButton();
+        }
+    }, 1800); // 1.8 second delay
 }
 
 function handleMusicEnd() {
@@ -578,6 +587,12 @@ function resetToFirstPage() {
     loginMusic.currentTime = 0;
     hideMusicPlayButton();
     
+    // Clear any pending login music timeout
+    if (loginMusicTimeout) {
+        clearTimeout(loginMusicTimeout);
+        loginMusicTimeout = null;
+    }
+    
     // Stop fireworks if active
     if (fireworksController) {
         fireworksController.stop();
@@ -620,7 +635,7 @@ function resetToFirstPage() {
         firstPage.style.opacity = "1";
         passwordInput.value = "";
         
-        // Start login music when returning to first page
+        // Start login music when returning to first page with delay
         handleLoginMusic();
     }, 500);
 }
@@ -757,6 +772,12 @@ function handleLogin() {
         loginMusic.currentTime = 0;
         hideMusicPlayButton();
         
+        // Clear any pending login music timeout
+        if (loginMusicTimeout) {
+            clearTimeout(loginMusicTimeout);
+            loginMusicTimeout = null;
+        }
+        
         // Stop any romantic song that might be playing
         romanticSong.pause();
         romanticSong.currentTime = 0;
@@ -837,10 +858,8 @@ function init() {
             hideMusicPlayButton();
         });
         
-        // Attempt to play login music automatically
-        setTimeout(() => {
-            handleLoginMusic();
-        }, 500); // Small delay to help with autoplay
+        // Start login music with delay after page loads
+        handleLoginMusic();
     });
 
     // Handle window resize for fireworks canvas
