@@ -93,7 +93,7 @@ loginMusic.loop = false;
 // ==============================================
 
 /**
- * Handles login page music playback with delay
+ * Handles login page music playback
  */
 function handleLoginMusic() {
     // Clear any existing timeout
@@ -101,36 +101,43 @@ function handleLoginMusic() {
         clearTimeout(loginMusicTimeout);
     }
     
-    // Set a new timeout for 2.5 seconds (2500ms)
+    // Set timeout for 1.5 seconds
     loginMusicTimeout = setTimeout(() => {
-        if (!loginMusicInitialized) {
-            loginMusic.addEventListener('error', function() {
-                console.error("Login music error:", loginMusic.error);
+        startLoginMusic();
+    }, 1500);
+}
+
+/**
+ * Starts the login music
+ */
+function startLoginMusic() {
+    if (!loginMusicInitialized) {
+        loginMusic.addEventListener('error', function() {
+            console.error("Login music error:", loginMusic.error);
+            showMusicPlayButton();
+        });
+        
+        loginMusic.addEventListener('ended', handleMusicEnd);
+        loginMusicInitialized = true;
+    }
+
+    // Reset play count
+    loginMusicPlayCount = 0;
+    
+    try {
+        loginMusic.currentTime = 0;
+        const playPromise = loginMusic.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Login music autoplay prevented:", error);
                 showMusicPlayButton();
             });
-            
-            loginMusic.addEventListener('ended', handleMusicEnd);
-            loginMusicInitialized = true;
         }
-
-        // Reset play count
-        loginMusicPlayCount = 0;
-        
-        try {
-            loginMusic.currentTime = 0;
-            const playPromise = loginMusic.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Login music autoplay prevented:", error);
-                    showMusicPlayButton();
-                });
-            }
-        } catch (error) {
-            console.error("Login music play error:", error);
-            showMusicPlayButton();
-        }
-    }, 1800); // 1.8 second delay
+    } catch (error) {
+        console.error("Login music play error:", error);
+        showMusicPlayButton();
+    }
 }
 
 function handleMusicEnd() {
@@ -149,7 +156,7 @@ function showMusicPlayButton() {
     
     musicFallbackBtn.style.display = 'block';
     musicFallbackBtn.addEventListener('click', function playMusicOnce() {
-        handleLoginMusic();
+        startLoginMusic();
         musicFallbackBtn.style.display = 'none';
         musicFallbackBtn.removeEventListener('click', playMusicOnce);
     });
@@ -635,7 +642,7 @@ function resetToFirstPage() {
         firstPage.style.opacity = "1";
         passwordInput.value = "";
         
-        // Start login music when returning to first page with delay
+        // Start login music when returning to first page
         handleLoginMusic();
     }, 500);
 }
@@ -745,7 +752,7 @@ function musicFallback() {
 function validateLogin() {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
-    const isValid = username === "Aishwarya" && password === "Aishwarya@15";
+    const isValid = username === "Aishwarya" && password === "Aishu@15";
     
     if (!isValid) {
         errorMessage.textContent = "Incorrect username or password";
@@ -858,8 +865,16 @@ function init() {
             hideMusicPlayButton();
         });
         
-        // Start login music with delay after page loads
+        // Start login music when page first loads
         handleLoginMusic();
+        
+        // Add click fallback for GitHub Pages
+        document.addEventListener('click', function musicFallback() {
+            // If music hasn't started yet and we're on first page
+            if (loginMusic.paused && !firstPage.classList.contains('hidden')) {
+                startLoginMusic();
+            }
+        }, { once: true });
     });
 
     // Handle window resize for fireworks canvas
