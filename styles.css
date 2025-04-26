@@ -10,7 +10,7 @@ body {
   align-items: center;
   text-align: center;
   color: #fff;
-  background: linear-gradient(145deg, #327aff, #FAA7B8);
+  background: linear-gradient(145deg, #055cfff7, #ffa5b7);
 }
 
 .page {
@@ -34,7 +34,7 @@ body {
 
 /* First Page Styles */
 #firstPage {
-  background: linear-gradient(145deg, #327aff, #FAA7B8);
+  background: linear-gradient(145deg, #055cfff7, #ffa5b7);
 }
 
 .content-wrapper {
@@ -1191,6 +1191,55 @@ p {
     opacity: 0;
   }
 }
+
+
+
+/* For Wave hand */
+/* Base Style */
+.greeting {
+  margin-left: 40px; /* Adjust the value as needed for space */
+}
+
+.wave {
+  display: inline-block;
+  animation: wave-animation 2s infinite;
+  transform-origin: 70% 70%;
+}
+
+/* Waving animation */
+@keyframes wave-animation {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+  60% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* For large screens (PC/Laptop) */
+@media (min-width: 1024px) {
+  .wave {
+    font-size: 4rem; /* Larger wave on bigger screens */
+  }
+}
+
+/* For tablet screens */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .wave {
+    font-size: 3rem; /* Slightly smaller wave for tablets */
+  }
+}
+
+/* For mobile screens */
+@media (max-width: 767px) {
+  .wave {
+    font-size: 2.5rem; /* Small wave on mobile */
+  }
+}
+
+
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
